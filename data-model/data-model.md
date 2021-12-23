@@ -110,15 +110,14 @@ It is not commonly used.
 
   beeline -u "jdbc:hive2://localhost:10000/default"
   
-  CREATE TABLE employee (
-    name STRING,
-    work_place ARRAY<STRING>,
-    gender_age STRUCT<gender:STRING,age:INT>,
-    skills_score MAP<STRING,INT>,
-    depart_title MAP<STRING,ARRAY<STRING>>
-  )
-  ROW FORMAT DELIMITED
-  FIELDS TERMINATED BY '|'
-  COLLECTION ITEMS TERMINATED BY ','
-  MAP KEYS TERMINATED BY ':'
-  STORED AS TEXTFILE;
+  CREATE TABLE employee( 
+		name STRING, 
+		work_place ARRAY, 
+		gender_age STRUCT<gender:STRING,age:INT>, 
+		skills_score MAP<STRING,INT>, 
+		depart_title MAP<STRING,ARRAY> 
+	) 
+	ROW FORMAT DELIMITED FIELDS TERMINATED BY '|' 
+	COLLECTION ITEMS TERMINATED BY ',' 
+	MAP KEYS TERMINATED BY ':' 
+	STORED AS TEXTFILE;
