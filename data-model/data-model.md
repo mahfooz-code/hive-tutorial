@@ -143,4 +143,19 @@ It is not commonly used.
 	skills_score['Sales'] as Sales,
 	skills_score['HR'] as HR
 	FROM employee;
+
+#	Query the composite type in the table
+	
+	SELECT depart_title FROM employee;
+	
+	SELECT name, depart_title['Product'] as Product, depart_title['Test'] as Test,
+	depart_title['COE'] as COE, depart_title['Sales'] as Sales
+	FROM employee;
+	
+	SELECT
+	name, depart_title['Product'][0] as product_col0, 
+	depart_title['Test'][0] as test_col0 
+	FROM employee;
+	
+	
 	
