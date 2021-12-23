@@ -95,18 +95,90 @@ Use the following command: _SHOW PARTITIONS table_name PARTITION (partitioned_co
 No, there is no way to delete the DBPROPERTY.
 
 
-# ******************************HIVE SERDE**************************
+**WHEN A HIVE TABLE PARTITION IS POINTED TO A NEW DIRECTORY, WHAT HAPPENS TO THE DATA?**
+
+The data remains in the old directory and needs to be transferred manually. 
+
+
+**DO YOU SAVE SPACE IN THE HDFS BY ARCHIVING HIVE TABLES?**
+
+No, archiving Hive tables only helps reduce the number of files that make for easier management of data.
+
+**WHAT IS A VIEW IN HIVE?**
+
+A view is a logical construct that allows search queries to be treated as tables.
+
+**CAN THE NAME OF A VIEW BE THE SAME AS A HIVE TABLE NAME?**
+
+No, the name of the view must always be unique in the database.
+
+**CAN WE USE THE LOAD OR INSERT COMMAND TO VIEW?**
+
+No, these commands cannot be used with respect to a view in Hive.
+
+**WHAT IS INDEXING IN HIVE?**
+
+Hive indexing is a query optimization technique to reduce the time needed to access a column or a set of columns within a Hive database.
+
+**ARE MULTI-LINE COMMENTS SUPPORTED BY HIVE?**
+
+No, multi-line comments are supported by Hive.
+
+**WHAT IS BUCKETING?**
+
+Bucketing is the process of hashing the values in a column into several user-defined buckets which helps avoid over-partitioning.
+
+**HOW IS BUCKETING HELPFUL?**
+
+Bucketing helps optimize the sampling process and shortens the query response time.
+
+
+**CAN YOU SPECIFY THE NAME OF THE TABLE CREATOR IN HIVE?**
+
+Yes, by using the TBLPROPERTIES clause. For example – TBLPROPERTIES (‘creator’= ‘john’)
+
+
+# *******************************HIVE SERDE*******************************
 
 **WHICH JAVA CLASS HANDLES THE INPUT RECORD ENCODING INTO FILES THAT STORE HIVE TABLES?**
 
 The 'org.apache.hadoop.mapred.TextInputFormat' class.
 
+**WHICH JAVA CLASS HANDLES OUTPUT RECORD ENCODING INTO HIVE QUERY FILES?**
+
+The 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat' class.
+
+
+# *****************************HCATALOG************************
+
+**WHAT IS HCATALOG?**
+
+Hcatalog is a tool that helps to share data structures with other external systems in the Hadoop ecosystem.
 
 # *****************************SQL*****************************
 
 **IF YOU HAD TO LIST ALL DATABASES THAT BEGAN WITH THE LETTER 'C', HOW WOULD YOU DO IT?**
 
 By using the following command: _SHOW DATABASES LIKE 'c.*'_
+
+**HOW CAN YOU STOP A PARTITION FROM BEING ACCESSED IN A QUERY?**
+
+Use the ENABLE OFFLINE clause along with the ALTER TABLE command.
+
+
+**CAN A CARTESIAN JOIN BE CREATED BETWEEN TWO HIVE TABLES?**
+
+This is not possible as it cannot be implemented in MapReduce programming.
+
+
+**HOW CAN YOU VIEW THE INDEXES OF A HIVE TABLE?**
+
+By using the following command: SHOW INDEX ON table_name
+
+
+**WHAT IS THE HIVE OBJECTINSPECTOR FUNCTION?**
+
+It helps to analyze the structure of individual columns and rows and provides access to the complex objects that are stored within the database.
 
 
 # ****Driver****
@@ -135,10 +207,24 @@ It depends upon underlying database for metastore.
 
 If it is derby then no because debrly allow only one connection at a time else yes.
 
+**WHAT IS A TABLE GENERATING FUNCTION ON HIVE?**
+
+These functions transform a single row into multiple rows. 
+
+EXPLODE is the only table generated function. 
+
+This function takes array as an input and outputs the elements of array into separate rows.
 
 # ****Engine****
 
+**CAN YOU AVOID MAPREDUCE ON HIVE?**
+
+You can make Hive avoid MapReduce to return query results by setting the hive.exec.mode.local.auto property to ‘true’.
+
+
 # ****HDFS****
+
+
 
 # ****YARN****
 
