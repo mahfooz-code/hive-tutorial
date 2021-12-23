@@ -22,6 +22,26 @@ Hive has a well-defined architecture for metadata management, authentication, an
 
 There is a big community of practitioners and developers working on and using Hive
 
+**WHAT ARE THE LIMITATIONS OF HIVE?**
+
+Hive has the following limitations: 
+
+1) Real-time queries cannot be executed and it has no row-level support.
+2) Hive cannot be used for online transaction processing.
+
+
+# ***************************HIVE ARCHITECTURE***************************
+
+**WHAT ARE THE DIFFERENT COMPONENTS OF A HIVE ARCHITECTURE?**
+
+Following are the five components of a Hive Architecture:
+
+- **User Interface**: It helps the user to send queries to the Hive system and other operations. The user interface provides hive Web UI, Hive Command-Line and Hive HDInsight.
+- **Driver**: It designs a session handle for the query, and then the queries are sent to the compiler for the execution plan.
+- **Metastore**: It contains the organized data and information on various warehouse tables and partitions.
+- **Compiler**: It creates the execution plan for the queries, performs semantic analysis on different query blocks, and generates query expression.
+- **Execution Engine**: It implements the execution plans created by the compiler. 
+
 
 # ****Client****
 
@@ -137,6 +157,19 @@ Bucketing helps optimize the sampling process and shortens the query response ti
 
 Yes, by using the TBLPROPERTIES clause. For example – TBLPROPERTIES (‘creator’= ‘john’)
 
+**WHAT IS UDF IN HIVE?**
+
+UDF is a user-designed function created with a Java program to address a specific function that is not part of the existing Hive functions.
+
+**HOW HIVE DISTRIBUTES THE ROWS INTO BUCKETS?**
+
+Hive uses the formula: hash_function (bucketing_column) modulo (num_of_buckets) to calculate the row's bucket number. 
+Here, hash_function is based on the Data type of the column. 
+
+The hash_function is for integer data type:
+
+hash_function (int_type_column)= value of int_type_column
+
 
 # *******************************HIVE SERDE*******************************
 
@@ -149,11 +182,22 @@ The 'org.apache.hadoop.mapred.TextInputFormat' class.
 The 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat' class.
 
 
-# *****************************HCATALOG************************
+**HOW DO ORC FORMAT TABLES HELP HIVE TO ENHANCE THE PERFORMANCE?**
+
+You can easily store the Hive Data with the ORC (Optimized Row Column) format as it helps to streamline several limitations.
+
+
+# ******************************HCATALOG******************************
 
 **WHAT IS HCATALOG?**
 
 Hcatalog is a tool that helps to share data structures with other external systems in the Hadoop ecosystem.
+
+**WHY DO YOU NEED A HCATOLOG?**
+
+For sharing Data structures with external systems, Hcatalog is a necessary tool.
+
+It offers access to the Hive metastore for reading and writing data in a Hive data warehouse.
 
 # *****************************SQL*****************************
 
@@ -180,8 +224,26 @@ By using the following command: SHOW INDEX ON table_name
 
 It helps to analyze the structure of individual columns and rows and provides access to the complex objects that are stored within the database.
 
+**WHAT DOES /*STREAMTABLE(TABLE_NAME)*/ DO? **
+
+It is a query hint that allows for a table to be streamed into memory before a query is executed.
 
 # ****Driver****
+
+**NAME THE COMPONENTS OF A HIVE QUERY PROCESSOR?**
+
+Following are the components of a Hive query processor:
+
+- Logical Plan of Generation.
+- Physical Plan of Generation.
+- Execution Engine.
+- UDF’s and UDAF.
+- Operators.
+- Optimizer.
+- Parser.
+- Semantic Analyzer.
+- Type Checking
+
 
 # ****Metastore****
 
