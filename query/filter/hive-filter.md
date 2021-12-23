@@ -37,4 +37,13 @@
 	a.gender_age.gender = b.gender_age.gender AND
 	b.gender_age.gender = 'Male');
 
+#	Restriction on hive where clause
+	
+	There are additional restrictions for subqueries used in WHERE clauses:
+
+	1) Subqueries can only appear on the right-hand side of WHERE clauses
+	2) Nested subqueries are not allowed
+	3) IN/NOT IN in subqueries only support the use of a single column, although they support more in regular expressions
+
+
 	
