@@ -83,5 +83,23 @@
 	$mysql -u root --password="mypassword" -e "GRANT ALL PRIVILEGES ON metastore.* TO 'hive'@'localhost' IDENTIFIED BY 'mypassword'; FLUSH PRIVILEGES;"
 	
 	schematool -dbType mysql -initSchema
+	
+
+**9)	Since Hive runs on Hadoop, first start the hdfs and yarn services, then the metastore and hiveserver2 services:**
+
+	start-dfs.sh
+	
+	start-yarn.sh
+	
+	hive --service metastore 1>> /tmp/meta.log 2>> /tmp/meta.log &
+	
+	hive --service hiveserver2 1>> /tmp/hs2.log 2>> /tmp/hs2.log &
+
+**10)	Connect Hive with either the hive or beeline command to verify that the installation is successful:**
+	
+	hive
+	
+	beeline -u "jdbc:hive2://localhost:10000"
+      
 
 
