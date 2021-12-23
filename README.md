@@ -86,6 +86,29 @@ Instead of scanning entire tables, only relevant partitions and corresponding da
 
 ARRAY, MAP, AND STRUCT are the three Hive collection data types.
 
+**HOW CAN YOU CHECK IF A SPECIFIC PARTITION EXISTS?**
+
+Use the following command: _SHOW PARTITIONS table_name PARTITION (partitioned_column='partition_value')_
+
+**IS IT POSSIBLE TO DELETE DBPROPERTY IN HIVE?**
+
+No, there is no way to delete the DBPROPERTY.
+
+
+# ******************************HIVE SERDE**************************
+
+**WHICH JAVA CLASS HANDLES THE INPUT RECORD ENCODING INTO FILES THAT STORE HIVE TABLES?**
+
+The 'org.apache.hadoop.mapred.TextInputFormat' class.
+
+
+# *****************************SQL*****************************
+
+**IF YOU HAD TO LIST ALL DATABASES THAT BEGAN WITH THE LETTER 'C', HOW WOULD YOU DO IT?**
+
+By using the following command: _SHOW DATABASES LIKE 'c.*'_
+
+
 # ****Driver****
 
 # ****Metastore****
