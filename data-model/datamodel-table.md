@@ -185,6 +185,7 @@
 	In Hive, each partition corresponds to a predefined partition column(s), which maps to subdirectories in the table's directory in HDFS.
 	When the table gets queried, only the required partitions (directory) of data in the table are being read, so the I/O and time of the query is greatly reduced.
 	Using partition is a very easy and effective way to improve performance in Hive.
+	
 	CREATE TABLE employee_partitioned (name STRING,
 	work_place ARRAY<STRING>,
 	gender_age STRUCT<gender:STRING,age:INT>,
@@ -199,7 +200,80 @@
 
 #	Show parititons on a table 
 	show partitions employee_partitioned;
+
+#	STATIC PARTITION
 	
+	ALTER TABLE ADD PARTITION statement to add static partitions to a table.
+	This command changes the table's metadata but does not load data.
+	If the data does not exist in the partition's location, queries will not return any results.
+	
+	ALTER TABLE employee_partitioned ADD
+	PARTITION (year=2018, month=11)
+	PARTITION (year=2018, month=12);
+	
+#	Load data into a table partition once the partition is created:
+	
+	LOAD DATA INPATH '/tmp/hivedemo/data/employee.txt'
+	OVERWRITE INTO TABLE employee_partitioned
+	PARTITION (year=2018, month=12);
+	
+	SELECT name, year, month FROM employee_partitioned;
+	
+#	DYNAMIC PARTITION
+	
+
+#	To drop the partition metadata, use the ALTER TABLE DROP PARTITION statement. 
+	For external tables, ALTER does not change data but metadata, drop partition will not drop data inside the partition. 
+	In order to remove data, we can use the hdfs dfs -rm command to remove data from HDFS for the external table.
+	For internal tables, ALTER TABLE ... DROP PARTITION will remove both partition and data. 
+	
+	ALTER TABLE employee_partitioned DROP IF EXISTS PARTITION (year=2018, month=11);
+	SHOW PARTITIONS employee_partitioned;
+	ALTER TABLE employee_partitioned DROP IF EXISTS PARTITION (year=2017);
+	ALTER TABLE employee_partitioned DROP IF EXISTS PARTITION (month=9);
+	ALTER TABLE employee_partitioned PARTITION (year=2018, month=12) RENAME TO PARTITION (year=2018,month=10);
+	SHOW PARTITIONS employee_partitioned;
+	
+	Because all partition columns should be specified for partition rename
+	
+	ALTER TABLE employee_partitioned PARTITION (year=2018) RENAME TO PARTITION (year=2017);
+	
+	For internal table, we use truncate
+	
+      	TRUNCATE TABLE employee_partitioned PARTITION (year=2018,month=12);
+	
+	For external table, we have to use hdfs command
+	dfs -rm -r -f /user/malam/employee_partitioned;
+
+#	Add regular columns to a partition table.
+	
+	Note, we CANNOT add new columns as partition columns.
+	There are two options when adding/removing columns from a partition table, CASCADE and RESTRICT.
+	The commonly used CASCADE option cascades the same change to all the partitions in the table.
+	However,  RESTRICT is the default, limiting column changes only to table metadata, which means the changes will be only applied to new partitions rather than existing 
+	partitions:
+	
+	ALTER TABLE employee_partitioned ADD COLUMNS (work string) CASCADE;
+	
+	ALTER TABLE employee_partitioned PARTITION COLUMN(year string);
+	
+	DESC employee_partitioned;
+
+#	Changing the partition's other properties in terms of file format, location, protections, and concatenation have the same syntax to alter the table statement:
+	
+	ALTER TABLE employee_partitioned PARTITION (year=2018) SET FILEFORMAT ORC;
+	
+	ALTER TABLE employee_partitioned PARTITION (year=2018) SET LOCATION '/tmp/data';
+	
+	ALTER TABLE employee_partitioned PARTITION (year=2018) ENABLE NO_DROP;
+	
+	ALTER TABLE employee_partitioned PARTITION (year=2018) ENABLE OFFLINE;
+	
+	ALTER TABLE employee_partitioned PARTITION (year=2018) DISABLE NO_DROP;
+	
+	ALTER TABLE employee_partitioned PARTITION (year=2018) DISABLE OFFLINE;
+	
+	ALTER TABLE employee_partitioned PARTITION (year=2018) CONCATENATE;
 	
 	
 	
