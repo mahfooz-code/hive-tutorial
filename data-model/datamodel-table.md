@@ -83,6 +83,9 @@
 	
 	CREATE TABLE ctas_employee as SELECT * FROM employee_external;
 
+#	Use CTAS to create an empty table by copying the schema from another table.
+	CREATE TABLE empty_ctas_employee as SELECT * FROM employee_internal WHERE 1=2;
+
 # Create a table with both CTAS and CTE
 	
 	CREATE TABLE cte_employee as
@@ -97,5 +100,106 @@
 	The CTE is defined only within the execution scope of a single statement.
 	One or more CTEs can be used in a nested or chained way with keywords, such as the SELECT, INSERT, CREATE TABLE AS SELECT, or CREATE VIEW AS SELECT statements.
 	Using CTE of HQL makes the query more concise and clear than writing complex nested queries.
+
+#	In another way, we can also use CREATE TABLE LIKE to create an empty table
+	 CREATE TABLE empty_like_employee LIKE employee_internal;	
+	 CREATE TABLE empty_like_employee LIKE employee_internal;
+
+#	Table description
+
+#	Show tables with regular expression filters:
+	SHOW TABLES; 
+	SHOW TABLES '*sam*';
+	SHOW TABLES '*sam|lily*'; 
+
+#	List detailed table information for all tables matching the given regular expression:
+	SHOW TABLE EXTENDED LIKE 'employee_int*';DROP TABLE IF EXISTS empty_ctas_employee;
+
+#	Show table-column information in two ways:
+	SHOW COLUMNS IN employee_internal;
+
+	DESC employee_internal;
+	
+#	Show create-table DDL statements for the specified table:
+	SHOW CREATE TABLE employee_internal;
+	
+#	Show table properties for the specified table:
+	SHOW TBLPROPERTIES employee_internal;
+	
+#	Table cleaning
+	DROP TABLE IF EXISTS empty_ctas_employee;
+
+#	The truncate table statement only removes data from the internal table only.
+	The table still exists, but is empty. 
+	
+	 TRUNCATE TABLE cte_employee;
+
+#	Table alteration
+	Rename a table with the ALTER statement. 
+	This is quite often used as data backup:
+	
+	ALTER TABLE cte_employee RENAME TO cte_employee_backup;
+
+#	Change the table properties with TBLPROPERTIES:
+      	ALTER TABLE cte_employee_backup SET TBLPROPERTIES ('comment'='New comments');
+
+#	Change the table's row format and SerDe with SERDEPROPERTIES:
+	ALTER TABLE employee_internal SET SERDEPROPERTIES ('field.delim' = '$');
+
+#	Change the table's file format with FILEFORMAT:
+	ALTER TABLE cte_employee_backup SET FILEFORMAT RCFILE;
+
+#	Change the table's location, a full URI of HDFS, with LOCATION:
+	ALTER TABLE cte_employee_backup SET LOCATION 'hdfs://localhost:8020/tmp/employee';
+
+#	Enable/Disable the table's protection. NO_DROP or OFFLINE. 
+	
+#	NO_DROP prevents a table from being dropped
+	
+	ALTER TABLE cte_employee_backup ENABLE NO_DROP; 
+	
+#	OFFLINE prevents data (not metadata) from being queried in a table: is not working and needs to check.
+	ALTER TABLE cte_employee_backup DISABLE NO_DROP; 
+	ALTER TABLE c_employee ENABLE OFFLINE;
+	ALTER TABLE c_employee DISABLE OFFLINE;
+
+#	Enable concatenation in an RCFile, or ORC table if it has many small files:
+	ALTER TABLE cte_employee_backup SET FILEFORMAT ORC;
+	ALTER TABLE cte_employee_backup CONCATENATE;
+
+#	Change the column's data type, position (with AFTER or FIRST), and comment:
+	DESC employee_internal;
+	
+	ALTER TABLE employee_internal CHANGE name employee_name string AFTER gender_age;
+	DESC employee_internal; 
+	ALTER TABLE employee_internal CHANGE employee_name name string COMMENT 'updated' FIRST;
+
+#	Add new columns to a table:
+	ALTER TABLE cte_employee_backup ADD COLUMNS (work string);
+
+#	Replacing all columns
+	ALTER TABLE cte_employee_backup REPLACE COLUMNS (name string);
+
+#	Partition
+	By default, a simple HQL query scans the whole table.
+	In Hive, each partition corresponds to a predefined partition column(s), which maps to subdirectories in the table's directory in HDFS.
+	When the table gets queried, only the required partitions (directory) of data in the table are being read, so the I/O and time of the query is greatly reduced.
+	Using partition is a very easy and effective way to improve performance in Hive.
+	CREATE TABLE employee_partitioned (name STRING,
+	work_place ARRAY<STRING>,
+	gender_age STRUCT<gender:STRING,age:INT>,
+	skills_score MAP<STRING,INT>,
+	depart_title MAP<STRING,ARRAY<STRING>>
+	)
+	PARTITIONED BY (year INT, month INT)
+	ROW FORMAT DELIMITED
+	FIELDS TERMINATED BY '|'
+	COLLECTION ITEMS TERMINATED BY ','
+	MAP KEYS TERMINATED BY ':'; 
+
+#	Show parititons on a table 
+	show partitions employee_partitioned;
+	
+	
 	
 	
