@@ -50,3 +50,21 @@
 	It is usually used with user-defined table-generating functions in Hive, such as explode(), for data normalization or processing JSON data.
 	LateralView first applies the table-generation function to the data, and then joins the function's input and output together.
 	
+	SELECT name, workplace FROM employee_internal 
+	LATERAL VIEW explode(work_place) wp as workplace;
+	
+	**Result will not be generated due to null values**
+	
+	SELECT name, workplace FROM employee_internal 
+	LATERAL VIEW explode(split(null, ',')) wp as workplace;
+	
+	**By adding OUTER after LATERAL VIEW, we can ensure we generate the result even if the table-generating function's output is NULL:**
+	
+	SELECT name, workplace FROM employee_internal 
+	LATERAL VIEW OUTER explode(split(null, ',')) wp as workplace;
+	
+
+	
+	
+	
+	
