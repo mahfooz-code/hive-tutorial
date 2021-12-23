@@ -33,6 +33,26 @@ Hive supports client applications based on Java, PHP, Python, C, and Ruby coding
 
 # ****Hive cli****
 
+**IS IT POSSIBLE TO RUN UNIX SHELL COMMANDS IN HIVE?**
+
+Yes, one can run shell commands in Hive by adding a '!' before the command.
+
+**IS IT POSSIBLE TO EXECUTE HIVE QUERIES FROM A SCRIPT FILE?**
+
+Yes, one can do so with the help of a source command.
+
+1) Hive> source /path/queryfile.hql
+2) hive -f /path/queryfile.hql
+
+**What is .hiverc file?**
+
+It is a file that is executed when you launch the hive shell - making it an ideal place for adding any hive configuration/customization you want set, on start of the hive shell. 
+This could be:
+- Setting column headers to be visible in query results
+- Making the current database name part of the hive prompt
+- Adding any jars or files
+- Registering UDFs
+
 # ****Hive Web Interface****
 
 # ****Thrift server****
@@ -51,6 +71,20 @@ The three modes in which Hive can be operated are **Local mode, distributed mode
 **WHAT ARE THE DIFFERENT TABLES AVAILABLE IN HIVE?**
 
 There are two types of tables available in Hive – managed and external.
+
+**IS THERE A DATA TYPE IN HIVE TO STORE DATE INFORMATION?**
+
+The TIMESTAMP data type in Hive stores all data information in the java.sql.timestamp format.
+
+**WHY IS PARTITIONING USED IN HIVE?**
+
+Partitioning is used in Hive as it allows for the reduction of query latency. 
+
+Instead of scanning entire tables, only relevant partitions and corresponding datasets are scanned.
+
+**WHAT ARE THE HIVE COLLECTION DATA TYPES?**
+
+ARRAY, MAP, AND STRUCT are the three Hive collection data types.
 
 # ****Driver****
 
