@@ -8,8 +8,21 @@
 	
 	 EXPORT TABLE employee TO '/tmp/output5';
 	 dfs -ls -R /tmp/output5/;
+#	Import
+	IMPORT TABLE FROM '/tmp/output5';
+	IMPORT TABLE empolyee_imported -- Specify a table imported
+	FROM '/tmp/output5';
 
+#	Import data to an external table, where the LOCATION property is optional:
+	
+	IMPORT EXTERNAL TABLE empolyee_imported_external
+	FROM '/tmp/output5'
+	LOCATION '/tmp/output6';
 
+#	Export and import partitions:
+	EXPORT TABLE employee_partitioned partition
+	(year=2018, month=12) TO '/tmp/output7';
+      
 	 
 
 
