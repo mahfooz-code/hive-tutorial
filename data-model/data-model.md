@@ -125,3 +125,22 @@ It is not commonly used.
 #	Load data from hdfs file system into the table:
 
 	LOAD DATA  INPATH 'employee.txt' OVERWRITE INTO TABLE employee;
+
+#	Querying array data
+
+	SELECT  work_place[0] as col_1, work_place[1] as col_2, 
+       work_place[2] as col_3 
+       FROM employee;
+
+#	Quering the struct data
+	
+	SELECT gender_age.gender, gender_age.age FROM employee;
+
+#	Query the whole map and each map element in the table:
+	
+	SELECT name, skills_score['DB'] as DB, skills_score['Perl'] as Perl,
+	skills_score['Python'] as Python, 
+	skills_score['Sales'] as Sales,
+	skills_score['HR'] as HR
+	FROM employee;
+	
