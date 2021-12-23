@@ -119,6 +119,8 @@
 #	CROSS JOIN
 	
 	This returns all row combinations in both the tables to produce a Cartesian product.
+	The CROSS JOIN statement does not have a join condition.
+	The CROSS JOIN statement can also be written using join without condition or with the always true condition, such as 1 = 1.
 	It has m * n rows.
 	
 	SELECT emp.name, emph.sin_number
@@ -126,8 +128,24 @@
 	CROSS JOIN employee_hr emph;
 	
 	
+	SELECT emp.name, emph.sin_number
+	FROM employee emp
+	JOIN employee_hr emph;
+	
+	SELECT emp.name, emph.sin_number
+	FROM employee emp
+	JOIN employee_hr emph on 1=1;
+	
+	
 
 #	MAP JOIN
+	
+	HQL also supports some special joins that we usually do not see in relational databases, such as MapJoin and Semi-join.
+	MapJoin means doing the join operation only with map, without the reduce job.
+	The MapJoin statement reads all the data from the small table to memory and broadcasts to all maps.
+	During the map phase, the join operation is performed by comparing each row of data in the big table with small tables against the join conditions.
+	Because there is no reduce needed, such kinds of join usually have better performance.
+	In the newer version of Hive, Hive automatically converts join to MapJoin at runtime if possible. 
 
 #	SEMI JOIN
 
